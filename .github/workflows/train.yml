@@ -29,6 +29,11 @@ jobs:
     - name: Run MLflow Project
       shell: bash -l {0}
       run: |
-        mlflow run mlproject --env-manager=conda
+        mlflow --version
+        conda --version
+        echo "📁 List isi direktori sebelum run:"
+        ls -R
+        echo "🚀 Mulai run MLflow..."
+        mlflow run . --env-manager=conda
 
 
