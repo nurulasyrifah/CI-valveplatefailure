@@ -13,6 +13,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Fix default conda config
+      run: |
+        echo "auto_activate: false" > ~/.condarc
+
     - name: Set up Miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
@@ -28,11 +32,4 @@ jobs:
     - name: Run MLflow Project
       shell: bash -l {0}
       run: |
-        mlflow --version
-        conda --version
-        echo "📁 List isi direktori sebelum run:"
-        ls -R
-        echo "🚀 Mulai run MLflow..."
-        mlflow run . --env-manager=conda
-
-
+        mlflow run mlproject --env-manager=conda
