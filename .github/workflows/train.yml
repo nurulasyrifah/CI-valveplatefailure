@@ -10,25 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Override runner's .condarc to fix MultipleKeysError
-        run: echo "auto_activate: false" > $HOME/.condarc
+    - name: Fix corrupted .condarc by deleting and replacing
+      run: |
+        rm -f $HOME/.condarc
+        echo "auto_activate: false" > $HOME/.condarc
 
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          python-version: 3.9
-          activate-environment: base
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: 3.9
+        activate-environment: base
 
-      - name: Install MLflow
-        shell: "bash -l {0}"
-        run: |
-          pip install mlflow
+    - name: Install MLflow
+      shell: bash -l {0}
+      run: |
+        pip install mlflow
 
-      - name: Run MLflow Project
-        shell: "bash -l {0}"
-        run: |
-          mlflow run mlproject --env-manager=conda
+    - name: Run MLflow Project
+      shell: bash -l {0}
+      run: |
+        mlflow run mlproject --env-manager=conda
