@@ -2,8 +2,7 @@ name: Train ValvePlate Model
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -11,26 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: 🐍 Set up Conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          environment-file: mlproject/conda.yaml
-          activate-environment: valveplate_env
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: 3.9
+        activate-environment: base
+        auto-activate-base: true
 
-      - name: 📦 Install MLflow
-        run: |
-          pip install mlflow
+    - name: Install MLflow
+      shell: bash -l {0}
+      run: |
+        pip install mlflow
 
-      - name: 🚀 Run MLflow Project
-        run: |
-          mlflow run ./mlproject
+    - name: Run MLflow Project
+      shell: bash -l {0}
+      run: |
+        mlflow run mlproject --env-manager=conda
 
-      - name: 🧱 Upload Trained Model (artifact)
-        uses: actions/upload-artifact@v4
-        with:
-          name: rf_model
-          path: mlproject/rf_model/
 
