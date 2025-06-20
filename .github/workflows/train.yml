@@ -13,24 +13,25 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Fix corrupted .condarc by deleting and replacing
+    - name: Remove and replace runner’s .condarc
       run: |
-        rm -f $HOME/.condarc
-        echo "auto_activate: false" > $HOME/.condarc
+        rm -f ~/.condarc
+        echo "auto_activate: false" > ~/.condarc
 
     - name: Set up Miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        auto-update-conda: true
         python-version: 3.9
+        auto-update-conda: true
         activate-environment: base
+        auto-activate-base: true
 
     - name: Install MLflow
       shell: bash -l {0}
       run: |
         pip install mlflow
 
-    - name: Run MLflow Project
+    - name: Run MLflow Project with conda
       shell: bash -l {0}
       run: |
         mlflow run mlproject --env-manager=conda
