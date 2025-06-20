@@ -19,7 +19,6 @@ jobs:
         auto-update-conda: true
         python-version: 3.9
         activate-environment: base
-        auto-activate-base: true
 
     - name: Install MLflow
       shell: bash -l {0}
