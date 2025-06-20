@@ -13,9 +13,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Fix default conda config
-      run: |
-        echo "auto_activate: false" > ~/.condarc
+    - name: Override runner's .condarc to fix MultipleKeysError
+      run: echo "auto_activate: false" > ~/.condarc
 
     - name: Set up Miniconda
       uses: conda-incubator/setup-miniconda@v2
