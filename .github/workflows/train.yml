@@ -1,0 +1,33 @@
+name: Train ValvePlate Model
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: 3.9
+        environment-file: MLProject/conda.yaml
+        activate-environment: valveplate_env
+        auto-activate-base: false  
+
+    - name: Install MLflow
+      shell: bash -l {0}
+      run: |
+        pip install mlflow
+
+    - name: Run MLflow Project
+      shell: bash -l {0}
+      run: |
+        mlflow run MLProject --env-manager=conda
